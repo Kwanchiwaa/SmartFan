@@ -105,12 +105,13 @@ def set_threshold():
             </style>
         </head>
         <body>
-            <h2>🌿 IoT Sensor Dashboard</h2>
+            <h2>🌞 IoT Sensor Dashboard</h2>
             <table>
                 <tr><th>Sensor</th><th>Value</th></tr>
-                <tr><td>💧 Humidity</td><td>{{ humidity }} %</td></tr>
+                
                 <tr><td>🌡️ Temperature</td><td>{{ temperature }} °C</td></tr>
                 <tr><td>🎚️ Threshold</td><td><b>{{ threshold }} %</b></td></tr>
+                <tr><td>💧 Humidity</td><td>{{ humidity }} %</td></tr>
             </table>
 
             <h3 style="text-align:center;">🔧 Update Threshold</h3>
