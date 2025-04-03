@@ -48,7 +48,6 @@ def set_threshold():
                 <tr><th>Sensor</th><th>Value</th></tr>
                 <tr><td>🌡️ Temperature</td><td>{{ temperature }} °C</td></tr>
                 <tr><td>💧 Humidity</td><td>{{ humidity }} %</td></tr>
-                <tr><td>🌱 Soil Moisture</td><td>{{ soil_moisture }} %</td></tr>
                 <tr><td>🎚️ Threshold</td><td><b>{{ threshold }} %</b></td></tr>
             </table>
 
