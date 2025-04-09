@@ -1,16 +1,39 @@
-from flask import Flask, render_template_string
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
-import datetime
+import Adafruit_DHT
+import time
 
+# เซ็ตค่าเซ็นเซอร์ DHT11
+DHT_SENSOR = Adafruit_DHT.DHT11
+DHT_PIN = 4  # GPIO Pin ที่เชื่อมต่อกับเซ็นเซอร์ DHT11
+
+# ตั้งค่าการใช้งาน Flask และ SocketIO
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-# ข้อมูลเซ็นเซอร์
-sensor_data = {
-    "temperature": 0,
-    "humidity": 0,
-    "pm25": 0
-}
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# ฟังก์ชั่นเพื่อดึงข้อมูลจากเซ็นเซอร์ DHT11
+def get_sensor_data():
+    humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
+    if humidity is not None and temperature is not None:
+        return {"temperature": temperature, "humidity": humidity}
+    else:
+        return {"temperature": 0, "humidity": 0}
+
+# ฟังก์ชั่นที่ส่งข้อมูลไปยัง WebSocket ทุกๆ 5 วินาที
+@socketio.on('connect')
+def handle_connect():
+    while True:
+        sensor_data = get_sensor_data()
+        emit('sensor_update', sensor_data)
+        time.sleep(5)
+
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000)
+
 
 @app.route("/dashboard")
 def dashboard():
